@@ -1,23 +1,22 @@
 package com.example.sanghyeok.softrhythm;
 
-import android.media.SoundPool;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 /**
- * Created by sanghyeok on 2015-05-11.
+ * Created by sanghyeok on 2015-05-27.
  */
-public class page2 extends FragmentActivity {
-
-
+public class archivesActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout2);
+        setContentView(R.layout.archives);
+
     }
 
     @Override

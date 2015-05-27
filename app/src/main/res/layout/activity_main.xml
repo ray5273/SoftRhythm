@@ -18,7 +18,7 @@
         android:layout_width="300dp"
         android:layout_height="80dp"
         android:text="자료실"
-        android:id="@+id/archives"
+        android:id="@+id/downloads"
         android:layout_below="@+id/gameStart"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"/>
@@ -27,8 +27,8 @@
         android:layout_width="300dp"
         android:layout_height="80dp"
         android:text="랭킹 보기"
-        android:id="@+id/rank"
-        android:layout_below="@+id/archives"
+        android:id="@+id/archives"
+        android:layout_below="@+id/downloads"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp" />
 

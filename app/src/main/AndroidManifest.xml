@@ -17,12 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".page1"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".page2"
-            android:screenOrientation="portrait">
-        </activity>
         <activity android:name=".SplashActivity"
             android:screenOrientation="portrait">
         </activity>

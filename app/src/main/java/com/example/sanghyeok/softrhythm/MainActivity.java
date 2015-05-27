@@ -11,18 +11,22 @@ import android.widget.Button;
 
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
-    Button btn_intent1;
-    Button btn_intent2;
+    Button btn_gameStart;
+    Button btn_archives;
+    Button btn_downloads;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startActivity(new Intent(this, SplashActivity.class));  // make splash page
-        btn_intent1=(Button)findViewById(R.id.newbtn);
-        btn_intent2=(Button)findViewById((R.id.button2));
-        btn_intent1.setOnClickListener(this);
-        btn_intent2.setOnClickListener(this);
+        btn_gameStart=(Button)findViewById(R.id.gameStart);
+        btn_archives=(Button)findViewById(R.id.archives);
+        btn_downloads=(Button)findViewById(R.id.downloads);
+        btn_gameStart.setOnClickListener(this);
+        btn_archives.setOnClickListener(this);
+        btn_downloads.setOnClickListener(this);
+
     }
 
     @Override
@@ -48,14 +52,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
     public void onClick(View v){
         switch(v.getId()){
-            case R.id.newbtn:
-                Intent intent = new Intent(this, page1.class);
+            case R.id.gameStart:
+                Intent intent = new Intent(this, selectSongActivity.class);
                 startActivity(intent);
-
                 break;
-            case R.id.button2:
-                Intent intent1 = new Intent(this, page2.class);
+            case R.id.downloads:
+                Intent intent1 = new Intent(this, downloadsActivity.class);
                 startActivity(intent1);
+                break;
+            case R.id.archives:
+                Intent intent2 = new Intent(this, archivesActivity.class);
+                startActivity(intent2);
                 break;
         }
     }
