@@ -20,9 +20,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         startActivity(new Intent(this, SplashActivity.class));  // make splash page
+
         btn_gameStart=(Button)findViewById(R.id.gameStart);
         btn_archives=(Button)findViewById(R.id.archives);
         btn_downloads=(Button)findViewById(R.id.downloads);
+
         btn_gameStart.setOnClickListener(this);
         btn_archives.setOnClickListener(this);
         btn_downloads.setOnClickListener(this);
