@@ -1,6 +1,8 @@
 package com.example.sanghyeok.softrhythm;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,12 +11,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     Button btn_gameStart;
     Button btn_archives;
     Button btn_downloads;
 
+    private TimerTask mTask;
+    private Timer mTimer;
+
+    private static MediaPlayer BGM;
+    float volume=1.0f;
+    float delTime=0.05f;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +40,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         btn_archives.setOnClickListener(this);
         btn_downloads.setOnClickListener(this);
 
+        BGM=MediaPlayer.create(this,R.raw.mainactivity);
+        BGM.setLooping(true);
+        BGM.start();
     }
 
     @Override
@@ -57,14 +71,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case R.id.gameStart:
                 Intent intent = new Intent(this, selectSongActivity.class);
                 startActivity(intent);
+                BGM.stop();
+                finish();
                 break;
             case R.id.downloads:
                 Intent intent1 = new Intent(this, downloadsActivity.class);
                 startActivity(intent1);
+                BGM.stop();
                 break;
             case R.id.archives:
                 Intent intent2 = new Intent(this, archivesActivity.class);
                 startActivity(intent2);
+                BGM.stop();
                 break;
         }
     }
