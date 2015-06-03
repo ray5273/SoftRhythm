@@ -26,9 +26,18 @@
         <activity android:name=".archivesActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".gameActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity android:name=".selectSongActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".helpActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".resultActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

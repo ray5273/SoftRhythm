@@ -19,7 +19,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     Button btn_gameStart;
     Button btn_archives;
     Button btn_downloads;
-
+    Button btn_help;
     private TimerTask mTask;
     private Timer mTimer;
 
@@ -35,10 +35,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         btn_gameStart=(Button)findViewById(R.id.gameStart);
         btn_archives=(Button)findViewById(R.id.archives);
         btn_downloads=(Button)findViewById(R.id.downloads);
+        btn_help=(Button)findViewById(R.id.help);
 
         btn_gameStart.setOnClickListener(this);
         btn_archives.setOnClickListener(this);
         btn_downloads.setOnClickListener(this);
+        btn_help.setOnClickListener(this);
 
         BGM=MediaPlayer.create(this,R.raw.mainactivity);
         BGM.setLooping(true);
@@ -82,6 +84,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case R.id.archives:
                 Intent intent2 = new Intent(this, archivesActivity.class);
                 startActivity(intent2);
+                BGM.stop();
+                break;
+            case R.id.help:
+                Intent intent3 = new Intent(this, helpActivity.class);
+                startActivity(intent3);
                 BGM.stop();
                 break;
         }

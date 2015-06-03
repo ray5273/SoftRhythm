@@ -1,6 +1,8 @@
 package com.example.sanghyeok.softrhythm;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -11,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,7 +40,6 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.select_song);
-
         back = (Button)findViewById(R.id.back_btn);
         back.setOnClickListener(this);
         // 선언한 리스트뷰에 사용할 리스뷰연결
@@ -47,12 +49,12 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
         alist = new ArrayList<CData>();
 
         // 데이터를 받기위해 데이터어댑터 객체 선언
+
         adapter = new DataAdapter(this, alist);
 
         // 리스트뷰에 어댑터 연결
         listview.setAdapter(adapter);
-
-        // ArrayAdapter를 통해서 ArrayList에 자료 저장
+        listview.setOnItemClickListener(new  ListViewItemClickListener());        // ArrayAdapter를 통해서 ArrayList에 자료 저장
         // 하나의 String값을 저장하던 것을 CData클래스의 객체를 저장하던것으로 변경
         // CData 객체는 생성자에 리스트 표시 텍스트뷰1의 내용과 텍스트뷰2의 내용 그리고 사진이미지값을 어댑터에 연결
 
@@ -83,6 +85,33 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
         adapter.add(new CData(getApplicationContext(), "가수명: 친구4",
                 "곡명 : 000-444-4444", R.drawable.ic_launcher));
 
+    }
+
+    private class ListViewItemClickListener implements AdapterView.OnItemClickListener
+    {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
+            alertDlg.setPositiveButton( "확인", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
+                    Intent intent = new Intent(getApplicationContext(), gameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            alertDlg.setNegativeButton("취소",new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick( DialogInterface dialog, int which ) {
+
+            }
+            });
+            alertDlg.setMessage("해당곡을 실행하시겠습니까?");
+            alertDlg.show();
+        }
     }
 
     private class DataAdapter extends ArrayAdapter<CData> {
@@ -146,7 +175,7 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
 
     }
 
-    // CData안에 받은 값을 직접 할당
+// CData안에 받은 값을 직접 할당
 
     class CData {
 
@@ -177,6 +206,7 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
             return m_szData2;
         }
     }
+
 
 
     @Override
