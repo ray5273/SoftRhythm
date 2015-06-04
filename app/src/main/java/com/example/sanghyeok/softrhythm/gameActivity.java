@@ -1,21 +1,32 @@
 package com.example.sanghyeok.softrhythm;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 /**
  * Created by sanghyeok on 2015-06-02.
  */
 public class gameActivity extends FragmentActivity {
-
+    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_page);
+        tv=(TextView)findViewById(R.id.textView11);
+        Intent intent=getIntent();
+        String str = intent.getExtras().getString("title");
+        tv.setText(str);
+        tv.setTextColor(Color.WHITE);
+        Log.v(str, str);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

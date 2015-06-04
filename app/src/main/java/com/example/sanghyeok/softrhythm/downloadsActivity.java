@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -79,7 +81,7 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
         try {
 
-            URL url = new URL("http://115.145.246.70/music_exist.php");
+            URL url = new URL("http://221.140.84.135/music_exist.php");
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -187,16 +189,24 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
     private class ListViewItemClickListener implements AdapterView.OnItemClickListener
     {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
         {
             AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
             alertDlg.setPositiveButton( "확인", new DialogInterface.OnClickListener()
             {
                 @Override
                 public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
-                    Intent intent = new Intent(getApplicationContext(), gameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
+                    String title = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 개쩔었다.
+                    String artist=(String)((TextView)view.findViewById(R.id.songName)).getText();
+
+                    Intent intent=new Intent(getApplicationContext(),gameActivity.class);
+                    intent.putExtra("title",title);
+                    intent.putExtra("artist",artist);
                     startActivity(intent);
-                    finish();
+                    Log.v(title, artist);
+                    Toast toast= Toast.makeText(getApplicationContext(),title+artist,Toast.LENGTH_LONG);
+                    toast.show();
+
                 }
             });
             alertDlg.setNegativeButton("취소",new DialogInterface.OnClickListener()
@@ -270,32 +280,6 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
         }
 
-        private class ListViewItemClickListener implements AdapterView.OnItemClickListener
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
-                alertDlg.setPositiveButton( "확인", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
-                        Intent intent = new Intent(getApplicationContext(), gameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-                alertDlg.setNegativeButton("취소",new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick( DialogInterface dialog, int which ) {
-
-                    }
-                });
-                alertDlg.setMessage("해당곡을 실행하시겠습니까?");
-                alertDlg.show();
-            }
-        }
 
 
     }

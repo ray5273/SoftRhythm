@@ -79,7 +79,7 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
 
         try {
 
-            URL url = new URL("http://115.145.246.70/test.php");
+            URL url = new URL("http://221.140.84.135/test.php");
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
