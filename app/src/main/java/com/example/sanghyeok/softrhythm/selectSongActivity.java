@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +36,8 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
     private Button back;
     // 데이터를 연결할 Adapter
     DataAdapter adapter;
-
+    String[] folders;
+    String[] dir_name;
     // 데이터를 담을 자료구조
     ArrayList<CData> alist;
 
@@ -60,30 +66,18 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
 
         // CData클래스를 만들때의 순서대로 해당 인수값을 입력
         // 한줄 한줄이 리스트뷰에 뿌려질 한줄 한줄이라고 생각하면 됩니다.
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구1",
-                "곡명 : 000-111-1111", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구2",
-                "곡명 : 000-222-2222", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구3",
-                "곡명 : 000-333-3333", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구4",
-                "곡명 : 000-444-4444", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구1",
-                "곡명 : 000-111-1111", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구2",
-                "곡명 : 000-222-2222", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구3",
-                "곡명 : 000-333-3333", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구4",
-                "곡명 : 000-444-4444", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구1",
-                "곡명 : 000-111-1111", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구2",
-                "곡명 : 000-222-2222", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구3",
-                "곡명 : 000-333-3333", R.drawable.ic_launcher));
-        adapter.add(new CData(getApplicationContext(), "가수명: 친구4",
-                "곡명 : 000-444-4444", R.drawable.ic_launcher));
+        folders=getTitleList();
+
+        if(folders.length==0)
+            adapter.add(new CData(getApplicationContext(),"곡이 없습니다",
+                    "곡을 다운받아 주십시오", R.drawable.ic_launcher));
+
+
+        for(int j = 0 ;j<folders.length;j++) {                  //폴더의 정보들을 불러와서 listView 에 추가 정보가 없을시 곡이없습니다 출력
+            dir_name = folders[j].split("_");
+            adapter.add(new CData(getApplicationContext(), dir_name[0],
+                    dir_name[1], R.drawable.ic_launcher));
+        }
 
     }
 
@@ -241,4 +235,37 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
 
         }
     }
+
+    private String[] getTitleList() //알아 보기 쉽게 메소드 부터 시작합니다.
+    {
+        try
+        {
+            FileFilter fileFilter = new FileFilter() {
+                public boolean accept(File file) {
+                    return file.isDirectory();
+                }
+            };
+
+            File file = new File(Environment.getExternalStorageDirectory()+"/SoftRhythm/Data/"); //경로를 SD카드로 잡은거고 그 안에 있는 A폴더 입니다. 입맛에 따라 바꾸세요.
+
+            File[] files = file.listFiles(fileFilter);//위에 만들어 두신 필터를 넣으세요. 만약 필요치 않으시면 fileFilter를 지우세요.
+
+            String [] titleList = new String [files.length]; //파일이 있는 만큼 어레이 생성했구요
+
+            for(int i = 0;i < files.length;i++)
+
+            {
+                titleList[i] = files[i].getName();	//루프로 돌면서 어레이에 하나씩 집어 넣습니다.
+            }//end for
+            return titleList;
+
+        } catch( Exception e )
+        {
+            return null;
+        }//end catch()
+
+    }//end getTitleList
+
 }
+
+

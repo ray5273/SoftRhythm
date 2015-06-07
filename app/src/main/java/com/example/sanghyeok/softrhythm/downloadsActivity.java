@@ -1,12 +1,15 @@
 package com.example.sanghyeok.softrhythm;
 
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -31,7 +34,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sanghyeok on 2015-05-27.
@@ -41,6 +46,12 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
     private Button back;
     // 데이터를 연결할 Adapter
     DataAdapter adapter;
+    private DownloadManager mDownloadManager; //다운로드 매니저.
+    private int mDownloadQueueId; //다운로드 큐 아이디..
+    private String mFileName ; //파일다운로드 완료후...파일을 열기 위해 저장된 위치를 입력해둔다.
+    public static String artist;
+    public static String title;
+
 
     // 데이터를 담을 자료구조
     private ArrayList<CData> alist;
@@ -196,14 +207,14 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
             {
                 @Override
                 public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
-                    String title = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 개쩔었다.
-                    String artist=(String)((TextView)view.findViewById(R.id.songName)).getText();
+                    artist = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 개쩔었다.
+                    title=   (String) ((TextView)view.findViewById(R.id.songName)).getText();
 
-                    Intent intent=new Intent(getApplicationContext(),gameActivity.class);
-                    intent.putExtra("title",title);
-                    intent.putExtra("artist",artist);
-                    startActivity(intent);
-                    Log.v(title, artist);
+//                    Intent intent=new Intent(getApplicationContext(),gameActivity.class);
+//                    intent.putExtra("title",title);
+//                    intent.putExtra("artist",artist);
+                    startDownload(artist,title);
+                    Log.v(artist, title);
                     Toast toast= Toast.makeText(getApplicationContext(),title+artist,Toast.LENGTH_LONG);
                     toast.show();
 
@@ -326,6 +337,20 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
         }
     }
+    //여기서부터 다운로드 관련
+
+    private void startDownload(String artist,String title) {
+        String url = "http://221.140.84.135/";
+        String url1= "http://221.140.84.135/";
+        url+=artist+"_"+title+"."+"dat";
+        url1+=artist+"_"+title+"."+"txt";
+        new downloadFileAsync(this).execute(url, "dat", "1");           //파일 갯수만큼 downloadFileAsync 를 추가해주면된다. 2째꺼는 파일 형식
+        new downloadFileAsync(this).execute(url1, "txt", "1");
+
+    }
+
+
+
 }
 
 

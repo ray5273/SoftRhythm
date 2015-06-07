@@ -18,7 +18,8 @@
             android:layout_toRightOf="@+id/back_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/select_music"/>
+            android:src="@drawable/select_music"
+            android:layout_weight="1" />
     </LinearLayout>
     <ListView
         android:layout_below="@+id/topPanel"
