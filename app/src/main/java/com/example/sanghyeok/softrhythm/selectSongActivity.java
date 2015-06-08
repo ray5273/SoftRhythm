@@ -65,19 +65,25 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
         // CData 객체는 생성자에 리스트 표시 텍스트뷰1의 내용과 텍스트뷰2의 내용 그리고 사진이미지값을 어댑터에 연결
 
         // CData클래스를 만들때의 순서대로 해당 인수값을 입력
-        // 한줄 한줄이 리스트뷰에 뿌려질 한줄 한줄이라고 생각하면 됩니다.
+        // 한줄 한줄이 리스트뷰에 뿌려질 한줄 한줄이라고 생각하면 됩니다.'
+
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        path = path + "/SoftRhythm/Data";
+
+        File dir = new File(path);
+
         folders=getTitleList();
 
-        if(folders.length==0)
+        if( !dir.exists() || folders.length==0 )
             adapter.add(new CData(getApplicationContext(),"곡이 없습니다",
                     "곡을 다운받아 주십시오", R.drawable.ic_launcher));
 
-
-        for(int j = 0 ;j<folders.length;j++) {                  //폴더의 정보들을 불러와서 listView 에 추가 정보가 없을시 곡이없습니다 출력
-            dir_name = folders[j].split("_");
-            adapter.add(new CData(getApplicationContext(), dir_name[0],
-                    dir_name[1], R.drawable.ic_launcher));
-        }
+        if(folders!=null)
+          for(int j = 0 ;j<folders.length;j++) {                  //폴더의 정보들을 불러와서 listView 에 추가 정보가 없을시 곡이없습니다 출력
+                dir_name = folders[j].split("_");
+                adapter.add(new CData(getApplicationContext(), dir_name[0],
+                      dir_name[1], R.drawable.ic_launcher));
+          }
 
     }
 
