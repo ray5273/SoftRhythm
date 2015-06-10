@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,9 +40,11 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
     private Button back;
     // 데이터를 연결할 Adapter
     DataAdapter adapter;
-
+    String server="http://221.140.84.135";//"http://221.140.84.135";
     // 데이터를 담을 자료구조
     private ArrayList<CData> alist;
+    public static String artist;
+    public static String title;
 
     @Override
 
@@ -79,7 +82,8 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
 
         try {
 
-            URL url = new URL("http://221.140.84.135/test.php");
+           // URL url = new URL("http://221.140.84.135/test.php");
+             URL url = new URL(server+"/music_exist.php");
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -159,10 +163,10 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
 
                 //결과물
                 //
+                singer=jo.getString("singer");
                 songname=jo.getString("songname");
-                singer=jo.getString("rank");
-                adapter.add(new CData(getApplicationContext(), songname,
-                        singer, R.drawable.ic_launcher));
+                adapter.add(new CData(getApplicationContext(), singer,
+                        songname, R.drawable.ic_launcher));
 
             }
 
@@ -187,14 +191,19 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
     private class ListViewItemClickListener implements AdapterView.OnItemClickListener
     {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
         {
             AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
             alertDlg.setPositiveButton( "확인", new DialogInterface.OnClickListener()
             {
                 @Override
                 public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
-                    Intent intent = new Intent(getApplicationContext(), gameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
+                    artist = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 개쩔었다.
+                    title=   (String) ((TextView)view.findViewById(R.id.songName)).getText();
+
+                    Log.v(artist, title);
+
+                    Intent intent = new Intent(getApplicationContext(), archivesSongActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
                     startActivity(intent);
                     finish();
                 }

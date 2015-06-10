@@ -1,20 +1,26 @@
 package com.example.sanghyeok.softrhythm;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 /**
  * Created by sanghyeok on 2015-06-03.
  */
-public class helpActivity extends FragmentActivity {
-
+public class helpActivity extends FragmentActivity implements View.OnClickListener {
+    Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help);
+        back=(Button)findViewById(R.id.back_btn);
+        back.setOnClickListener(this);
     }
 
     @Override
@@ -37,5 +43,18 @@ public class helpActivity extends FragmentActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+
+            case R.id.back_btn:
+                Intent intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+
+        }
     }
 }

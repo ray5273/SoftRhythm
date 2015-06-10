@@ -80,16 +80,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 Intent intent1 = new Intent(this, downloadsActivity.class);
                 startActivity(intent1);
                 BGM.stop();
+                finish();
                 break;
             case R.id.archives:
                 Intent intent2 = new Intent(this, archivesActivity.class);
                 startActivity(intent2);
                 BGM.stop();
+                finish();
                 break;
             case R.id.help:
                 Intent intent3 = new Intent(this, helpActivity.class);
                 startActivity(intent3);
                 BGM.stop();
+                finish();
                 break;
         }
     }

@@ -1,21 +1,15 @@
 package com.example.sanghyeok.softrhythm;
 
 import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,28 +27,20 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by sanghyeok on 2015-05-27.
+ * Created by sanghyeok on 2015-06-10.
  */
-public class downloadsActivity  extends FragmentActivity implements View.OnClickListener{
+public class archivesSongActivity extends FragmentActivity implements View.OnClickListener{
     private ListView listview;
     private Button back;
-    // ë°ì´í„°ë¥¼ ì—°ê²°í•  Adapter
+    // µ¥ÀÌÅÍ¸¦ ¿¬°áÇÒ Adapter
     DataAdapter adapter;
-    private DownloadManager mDownloadManager; //ë‹¤ìš´ë¡œë“œ ë§¤ë‹ˆì €.
-    private int mDownloadQueueId; //ë‹¤ìš´ë¡œë“œ í ì•„ì´ë””..
-    private String mFileName ; //íŒŒì¼ë‹¤ìš´ë¡œë“œ ì™„ë£Œí›„...íŒŒì¼ì„ ì—´ê¸° ìœ„í•´ ì €ì¥ëœ ìœ„ì¹˜ë¥¼ ì…ë ¥í•´ë‘”ë‹¤.
-    public static String artist;
-    public static String title;
-    String server="http://221.140.84.135";//"http://221.140.84.135";
-
-    // ë°ì´í„°ë¥¼ ë‹´ì„ ìë£Œêµ¬ì¡°
+    String server="http://221.140.84.135";
+    // µ¥ÀÌÅÍ¸¦ ´ãÀ» ÀÚ·á±¸Á¶
     private ArrayList<CData> alist;
-
+    String artist,title;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,31 +55,31 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.downloads);
-        back = (Button)findViewById(R.id.back_btn);
+        setContentView(R.layout.archives_song);
+        back = (Button)findViewById(R.id.backpage);
         back.setOnClickListener(this);
-        // ì„ ì–¸í•œ ë¦¬ìŠ¤íŠ¸ë·°ì— ì‚¬ìš©í•  ë¦¬ìŠ¤ë·°ì—°ê²°
+        // ¼±¾ğÇÑ ¸®½ºÆ®ºä¿¡ »ç¿ëÇÒ ¸®½ººä¿¬°á
         listview = (ListView) findViewById(R.id.songlist);
 
-        // ê°ì²´ë¥¼ ìƒì„±í•©ë‹ˆë‹¤
+        // °´Ã¼¸¦ »ı¼ºÇÕ´Ï´Ù
         alist = new ArrayList<CData>();
 
-        // ë°ì´í„°ë¥¼ ë°›ê¸°ìœ„í•´ ë°ì´í„°ì–´ëŒ‘í„° ê°ì²´ ì„ ì–¸
+        // µ¥ÀÌÅÍ¸¦ ¹Ş±âÀ§ÇØ µ¥ÀÌÅÍ¾î´ğÅÍ °´Ã¼ ¼±¾ğ
 
         adapter = new DataAdapter(this, alist);
 
-        // ë¦¬ìŠ¤íŠ¸ë·°ì— ì–´ëŒ‘í„° ì—°ê²°
+        // ¸®½ºÆ®ºä¿¡ ¾î´ğÅÍ ¿¬°á
         listview.setAdapter(adapter);
-        listview.setOnItemClickListener(new  ListViewItemClickListener());
 
         StringBuilder sb = new StringBuilder();
 
 
         try {
+            artist=archivesActivity.artist;
+            title=archivesActivity.title;
 
-            URL url = new URL(server+"/music_exist.php");
-//            URL url = new URL("http://221.140.84.135/music_exist.php");
-
+            // URL url = new URL("http://221.140.84.135/test.php");
+            URL url = new URL(server+"/rank.php"+"?artist="+artist+"&title="+title);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             if (conn != null) {
@@ -160,8 +145,8 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
         try {
 
-            String songname = "";
-            String singer="";
+            String total = "";
+            String grade="";
 
             JSONArray ja = new JSONArray(jsonString);
 
@@ -171,18 +156,34 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
                 JSONObject jo = ja.getJSONObject(i);
 
-                //ê²°ê³¼ë¬¼
-
-                songname=jo.getString("songname");
-                singer=jo.getString("singer");
-                adapter.add(new CData(getApplicationContext(), singer,
-                        songname, R.drawable.ic_launcher));
+                //°á°ú¹°
+                //
+                grade=jo.getString("grade");
+                total=jo.getString("total");
+                if(grade.equals("challenger"))
+                    adapter.add(new CData(getApplicationContext(), "# "+Integer.toString(i+1),
+                        total, R.drawable.challenger));
+                else if(grade.equals("diamond"))
+                    adapter.add(new CData(getApplicationContext(), "# "+Integer.toString(i+1),
+                            total, R.drawable.bronze));
+                else if(grade.equals("platinum"))
+                    adapter.add(new CData(getApplicationContext(), "# "+Integer.toString(i+1),
+                            total, R.drawable.platinum));
+                else if(grade.equals("gold"))
+                    adapter.add(new CData(getApplicationContext(),"# "+ Integer.toString(i+1),
+                            total, R.drawable.gold));
+                else if(grade.equals("silver"))
+                    adapter.add(new CData(getApplicationContext(),"# "+ Integer.toString(i+1),
+                            total, R.drawable.silver));
+                else if(grade.equals("bronze"))
+                    adapter.add(new CData(getApplicationContext(), "# "+Integer.toString(i+1),
+                            total, R.drawable.bronze));
 
             }
 
 
 
-            //ê²°ê³¼ ì¶œë ¥
+            //°á°ú Ãâ·Â
 
 
 
@@ -198,74 +199,43 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
 
     }
-    private class ListViewItemClickListener implements AdapterView.OnItemClickListener
-    {
-        @Override
-        public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
-        {
-            AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
-            alertDlg.setPositiveButton( "í™•ì¸", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick( DialogInterface dialog, int which ) {                  //ì„ íƒì ìœ¼ë¡œ ì •ë³´ë¥¼ ë°›ì•„ì•¼í•¨
-                    artist = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// ê°œì©”ì—ˆë‹¤.
-                    title=   (String) ((TextView)view.findViewById(R.id.songName)).getText();
 
-
-                    startDownload(artist,title);
-                    Log.v(artist, title);
-                    Toast toast= Toast.makeText(getApplicationContext(),title+artist,Toast.LENGTH_LONG);
-                    toast.show();
-
-                }
-            });
-            alertDlg.setNegativeButton("ì·¨ì†Œ",new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick( DialogInterface dialog, int which ) {
-
-                }
-            });
-            alertDlg.setMessage("í•´ë‹¹ê³¡ì„ ë‹¤ìš´ë¡œë“œ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?");
-            alertDlg.show();
-        }
-    }
 
     private class DataAdapter extends ArrayAdapter<CData> {
-        // ë ˆì´ì•„ì›ƒ XMLì„ ì½ì–´ë“¤ì´ê¸° ìœ„í•œ ê°ì²´
+        // ·¹ÀÌ¾Æ¿ô XMLÀ» ÀĞ¾îµéÀÌ±â À§ÇÑ °´Ã¼
         private LayoutInflater mInflater;
 
         public DataAdapter(Context context, ArrayList<CData> object) {
 
-            // ìƒìœ„ í´ë˜ìŠ¤ì˜ ì´ˆê¸°í™” ê³¼ì •
-            // context, 0, ìë£Œêµ¬ì¡°
+            // »óÀ§ Å¬·¡½ºÀÇ ÃÊ±âÈ­ °úÁ¤
+            // context, 0, ÀÚ·á±¸Á¶
             super(context, 0, object);
             mInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         }
 
-        // ë³´ì—¬ì§€ëŠ” ìŠ¤íƒ€ì¼ì„ ìì‹ ì´ ë§Œë“  xmlë¡œ ë³´ì´ê¸° ìœ„í•œ êµ¬ë¬¸
+        // º¸¿©Áö´Â ½ºÅ¸ÀÏÀ» ÀÚ½ÅÀÌ ¸¸µç xml·Î º¸ÀÌ±â À§ÇÑ ±¸¹®
         @Override
         public View getView(int position, View v, ViewGroup parent) {
             View view = null;
 
-            // í˜„ì¬ ë¦¬ìŠ¤íŠ¸ì˜ í•˜ë‚˜ì˜ í•­ëª©ì— ë³´ì¼ ì»¨íŠ¸ë¡¤ ì–»ê¸°
+            // ÇöÀç ¸®½ºÆ®ÀÇ ÇÏ³ªÀÇ Ç×¸ñ¿¡ º¸ÀÏ ÄÁÆ®·Ñ ¾ò±â
 
             if (v == null) {
 
-                // XML ë ˆì´ì•„ì›ƒì„ ì§ì ‘ ì½ì–´ì„œ ë¦¬ìŠ¤íŠ¸ë·°ì— ë„£ìŒ
+                // XML ·¹ÀÌ¾Æ¿ôÀ» Á÷Á¢ ÀĞ¾î¼­ ¸®½ºÆ®ºä¿¡ ³ÖÀ½
                 view = mInflater.inflate(R.layout.song_list, null);
             } else {
 
                 view = v;
             }
 
-            // ìë£Œë¥¼ ë°›ëŠ”ë‹¤.
+            // ÀÚ·á¸¦ ¹Ş´Â´Ù.
             final CData data = this.getItem(position);
 
             if (data != null) {
-                // í™”ë©´ ì¶œë ¥
+                // È­¸é Ãâ·Â
                 TextView tv = (TextView) view.findViewById(R.id.singerName);
                 TextView tv2 = (TextView) view.findViewById(R.id.songName);
 
@@ -281,7 +251,7 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
                 ImageView iv = (ImageView) view.findViewById(R.id.albumImage);
 
-                // ì´ë¯¸ì§€ë·°ì— ë¿Œë ¤ì§ˆ í•´ë‹¹ ì´ë¯¸ì§€ê°’ì„ ì—°ê²° ì¦‰ ì„¸ë²ˆì§¸ ì¸ìˆ˜ê°’
+                // ÀÌ¹ÌÁöºä¿¡ »Ñ·ÁÁú ÇØ´ç ÀÌ¹ÌÁö°ªÀ» ¿¬°á Áï ¼¼¹øÂ° ÀÎ¼ö°ª
                 iv.setImageResource(data.getData2());
 
             }
@@ -290,11 +260,9 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
         }
 
-
-
     }
 
-// CDataì•ˆì— ë°›ì€ ê°’ì„ ì§ì ‘ í• ë‹¹
+// CData¾È¿¡ ¹ŞÀº °ªÀ» Á÷Á¢ ÇÒ´ç
 
     class CData {
 
@@ -328,32 +296,15 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
     public void onClick(View v){
         switch(v.getId()){
-            case R.id.back_btn:
-                Intent intent = new Intent(this, MainActivity.class);
+            case R.id.backpage:
+                Intent intent = new Intent(this, archivesActivity.class);
                 startActivity(intent);
                 finish();
                 break;
 
         }
     }
-    //ì—¬ê¸°ì„œë¶€í„° ë‹¤ìš´ë¡œë“œ ê´€ë ¨
-
-    private void startDownload(String artist,String title) {
-        //String url = "http://221.140.84.135/";
-        String url = server+"/";
-        String url1= url;
-        String url2= url1;
-        url+=artist+"_"+title+".dat";
-        url1+=artist+"_"+title+".txt";
-        url2+=artist+"_"+title+".png";
-        new downloadFileAsync(this).execute(url, "dat", "1");           //íŒŒì¼ ê°¯ìˆ˜ë§Œí¼ downloadFileAsync ë¥¼ ì¶”ê°€í•´ì£¼ë©´ëœë‹¤. 2ì§¸êº¼ëŠ” íŒŒì¼ í˜•ì‹
-        new downloadFileAsync(this).execute(url1, "txt", "1");
-        new downloadFileAsync(this).execute(url2, "png", "1");
-
-    }
-
-
-
 }
+
 
 

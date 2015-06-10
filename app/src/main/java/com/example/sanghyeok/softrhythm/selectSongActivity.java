@@ -101,7 +101,14 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
                     artist = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 개쩔었다.
                     title=   (String) ((TextView)view.findViewById(R.id.songName)).getText();
 
-                    Intent intent = new Intent(getApplicationContext(), gameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
+                    Intent intent = new Intent(getApplicationContext(), resultActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
+                    intent.putExtra("title",title);
+                    intent.putExtra("artist",artist);
+                    intent.putExtra("cool","1000");
+                    intent.putExtra("good","1000");
+                    intent.putExtra("miss","1000");
+                    intent.putExtra("bad","1000");
+                    intent.putExtra("combo","1000");
                     startActivity(intent);
                     finish();
                 }

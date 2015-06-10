@@ -1,10 +1,12 @@
 package com.example.sanghyeok.softrhythm;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -17,17 +19,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * Created by sanghyeok on 2015-06-03.
  */
-public class resultActivity extends FragmentActivity implements OnClickListener{
+public class resultActivity extends FragmentActivity implements View.OnClickListener{
     private ImageView album_art;
     private ImageView grade;
     private TextView cool,good,bad,miss,combo,total;
     private TextView artist_text,title_text;
     private Button go_main,restart_game_btn;
     String artist_title;
+    String server="http://221.140.84.135";//"http://221.140.84.135";
+    String artist,title;
+    String grade_str;
     int sum;
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +50,9 @@ public class resultActivity extends FragmentActivity implements OnClickListener{
 
         artist_title=selectSongActivity.artist+"_"+selectSongActivity.title;
 
-        go_main=(Button)findViewById(R.id.go_main);
+        go_main=(Button)findViewById(R.id.go_main_result);
         restart_game_btn=(Button)findViewById(R.id.replay_game);
+        go_main.setOnClickListener(this);
 
         artist_text=(TextView)findViewById(R.id.artist);
         artist_text.setText(selectSongActivity.artist);
@@ -74,9 +90,76 @@ public class resultActivity extends FragmentActivity implements OnClickListener{
         sum=Integer.parseInt(getData.getExtras().getString("cool"))+Integer.parseInt(getData.getExtras().getString("good"));
         total.setText("Total : "+sum);
 
+        if(sum>0)
+            grade_str="silver";
+
+        try {
+            artist=selectSongActivity.artist;
+            title=selectSongActivity.title;
 
 
-        //티어 결정구간
+
+            // URL url = new URL("http://221.140.84.135/test.php");
+            URL url = new URL(server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            if (conn != null) {
+
+
+
+                conn.setConnectTimeout(10000);
+
+                conn.setUseCaches(false);
+
+
+
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+                    BufferedReader br = new BufferedReader(
+
+                            new InputStreamReader(conn.getInputStream()));
+
+
+
+
+
+                    while (true) {
+
+                        String line = br.readLine();
+
+                        if (line == null)
+
+                            break;
+
+
+
+                    }
+
+                    br.close();
+
+
+
+                } else {
+
+
+
+                }
+
+                conn.disconnect();
+
+            }
+
+        } catch (Exception e) {
+
+
+        }
+
+
+
+
+    }
+
+        /*//티어 결정구간
         if(sum>) {
             // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
             Drawable drawable = getResources().getDrawable(R.drawable.challenger);
@@ -127,9 +210,9 @@ public class resultActivity extends FragmentActivity implements OnClickListener{
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
         }
+    */
 
 
-    }
 
 
 
@@ -159,11 +242,12 @@ public class resultActivity extends FragmentActivity implements OnClickListener{
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.replay_game:
-
+                finish();
                 break;
-            case R.id.go_main:
+            case R.id.go_main_result:
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);
+                finish();
                 break;
         }
     }
