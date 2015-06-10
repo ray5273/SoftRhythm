@@ -38,6 +38,7 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
     DataAdapter adapter;
     String[] folders;
     String[] dir_name;
+    public static String artist,title;
     // 데이터를 담을 자료구조
     ArrayList<CData> alist;
 
@@ -90,13 +91,16 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
     private class ListViewItemClickListener implements AdapterView.OnItemClickListener
     {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
         {
             AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
             alertDlg.setPositiveButton( "확인", new DialogInterface.OnClickListener()
             {
                 @Override
                 public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
+                    artist = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 개쩔었다.
+                    title=   (String) ((TextView)view.findViewById(R.id.songName)).getText();
+
                     Intent intent = new Intent(getApplicationContext(), gameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
                     startActivity(intent);
                     finish();

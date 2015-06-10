@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:background="#ffffff"
+        android:background="#558ed5"
         android:orientation="vertical"
         android:layout_marginTop="50dp"
         android:layout_width="match_parent"
@@ -15,36 +15,50 @@
         android:layout_marginRight="30dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:id="@+id/layout_large"
         android:layout_gravity="center_horizontal">
 
         <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@mipmap/ic_launcher"
-            android:layout_gravity="center_horizontal" />
+        android:layout_height="70dp"
+        android:background="@drawable/result_banner"
+        android:layout_gravity="center_horizontal"
+            android:id="@+id/result_banner" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:layout_weight="3">
+            android:background="#17375e"
+            android:layout_weight="3"
+            android:id="@+id/layout_2">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@mipmap/ic_launcher" />
+                android:id="@+id/album_art"
+                android:background="@drawable/album_art"
+                />
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" >
+                android:layout_marginLeft="10dp"
+                android:id="@+id/forVerticalText">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/artist"
+                    android:text="가수명"
+                    android:textSize="25dp"
+                    android:textColor="#ffffff"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/title"
+                    android:layout_marginTop="30dp"
+                    android:text="곡명"
+                    android:textSize="25dp"
+                    android:textColor="#ffffff"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -53,13 +67,13 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+
             >
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@mipmap/ic_launcher" />
+                android:background="@drawable/challenger"
+                android:id="@+id/grade_img" />
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
@@ -67,11 +81,45 @@
                 android:layout_weight="1">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/cool"
+
+                    android:text="cool"/>
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/good"
+                    android:layout_marginTop="10dp"
+                    android:text="good"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
 
+                    android:id="@+id/bad"
+                    android:text="bad"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+
+                    android:id="@+id/miss"
+                    android:text="miss"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+
+                    android:id="@+id/combo"
+                    android:text="combo"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="25dp"
+                    android:id="@+id/total"
+                    android:text="total"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -79,17 +127,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_weight="1">
+            >
            <Button
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
                android:layout_weight="1"
-               android:background="@mipmap/ic_launcher"/>
+               android:background="@layout/btn_selector"
+               android:id="@+id/replay_game"
+               android:text="다시하기" />
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@mipmap/ic_launcher"/>
+                android:background="@layout/btn_selector"
+                android:id="@+id/go_main"
+                android:text="메인으로" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
