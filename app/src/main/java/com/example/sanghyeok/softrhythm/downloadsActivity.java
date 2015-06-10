@@ -341,11 +341,14 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
     private void startDownload(String artist,String title) {
         String url = "http://221.140.84.135/";
-        String url1= "http://221.140.84.135/";
-        url+=artist+"_"+title+"."+"dat";
-        url1+=artist+"_"+title+"."+"txt";
+        String url1= url;
+        String url2= url1;
+        url+=artist+"_"+title+".dat";
+        url1+=artist+"_"+title+".txt";
+        url2+=artist+"_"+title+".png";
         new downloadFileAsync(this).execute(url, "dat", "1");           //파일 갯수만큼 downloadFileAsync 를 추가해주면된다. 2째꺼는 파일 형식
         new downloadFileAsync(this).execute(url1, "txt", "1");
+        new downloadFileAsync(this).execute(url2, "png", "1");
 
     }
 
