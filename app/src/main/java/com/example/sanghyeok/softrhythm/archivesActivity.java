@@ -40,7 +40,7 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
     private Button back;
     // 데이터를 연결할 Adapter
     DataAdapter adapter;
-    String server="http://221.140.84.135";//"http://221.140.84.135";
+    String server="http://203.252.53.3";//"http://221.140.84.135";
     // 데이터를 담을 자료구조
     private ArrayList<CData> alist;
     public static String artist;
@@ -289,8 +289,8 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
                 {
                     @Override
                     public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
-                        Intent intent = new Intent(getApplicationContext(), gameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
-                        startActivity(intent);
+   //                     Intent intent = new Intent(getApplicationContext(), gameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
+   //                     startActivity(intent);
                         finish();
                     }
                 });

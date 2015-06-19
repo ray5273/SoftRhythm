@@ -35,9 +35,9 @@ import java.util.ArrayList;
 public class archivesSongActivity extends FragmentActivity implements View.OnClickListener{
     private ListView listview;
     private Button back;
-    // 데이터를 연결할 Adapter
+    //  데이터를 연결할 Adapter
     DataAdapter adapter;
-    String server="http://221.140.84.135";
+        String server="http://203.252.53.3";
     // 데이터를 담을 자료구조
     private ArrayList<CData> alist;
     String artist,title;

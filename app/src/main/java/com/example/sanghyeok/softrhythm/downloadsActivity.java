@@ -51,7 +51,7 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
     private String mFileName ; //파일다운로드 완료후...파일을 열기 위해 저장된 위치를 입력해둔다.
     public static String artist;
     public static String title;
-    String server="http://221.140.84.135";//"http://221.140.84.135";
+    String server="http://203.252.53.3";//"http://221.140.84.135";
 
     // 데이터를 담을 자료구조
     private ArrayList<CData> alist;

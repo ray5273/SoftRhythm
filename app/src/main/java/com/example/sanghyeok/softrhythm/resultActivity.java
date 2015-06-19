@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,10 +28,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Created by sanghyeok on 2015-06-03.
  */
+
+
 public class resultActivity extends FragmentActivity implements View.OnClickListener{
     private ImageView album_art;
     private ImageView grade;
@@ -38,28 +42,33 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
     private TextView artist_text,title_text;
     private Button go_main,restart_game_btn;
     String artist_title;
-    String server="http://221.140.84.135";//"http://221.140.84.135";
+    String server="http://203.252.53.3";//"http://221.140.84.135";
     String artist,title;
     String grade_str;
-    int sum;
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private int sum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.result_page);
 
-        artist_title=selectSongActivity.artist+"_"+selectSongActivity.title;
+        Intent getData = getIntent();
+        artist=getData.getExtras().getString("artist");
+        title=getData.getExtras().getString("title");
+
+
+        artist_title=artist+"_"+title;
 
         go_main=(Button)findViewById(R.id.go_main_result);
         restart_game_btn=(Button)findViewById(R.id.replay_game);
         go_main.setOnClickListener(this);
 
         artist_text=(TextView)findViewById(R.id.artist);
-        artist_text.setText(selectSongActivity.artist);
+        artist_text.setText(artist);
         artist_text.setTypeface(Typeface.createFromAsset(getAssets(), "bm_hanna.ttf"));
 
         title_text=(TextView)findViewById(R.id.title);
-        title_text.setText(selectSongActivity.title);
+        title_text.setText(title);
         title_text.setTypeface(Typeface.createFromAsset(getAssets(), "bm_hanna.ttf"));
 
         try{
@@ -81,122 +90,52 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
 
 
 
-        Intent getData = getIntent();
-        cool.setText("Cool :" + getData.getExtras().getString("cool"));
+
+        cool.setText("Perfect :" + getData.getExtras().getString("cool"));
         good.setText("Good :"+getData.getExtras().getString("good"));
         bad.setText("Bad :" + getData.getExtras().getString("bad"));
         miss.setText("Miss :" + getData.getExtras().getString("miss"));
         combo.setText("Combo :" + getData.getExtras().getString("combo"));
         sum=Integer.parseInt(getData.getExtras().getString("cool"))+Integer.parseInt(getData.getExtras().getString("good"));
         total.setText("Total : "+sum);
-
-        if(sum>0)
-            grade_str="silver";
-
-        try {
-            artist=selectSongActivity.artist;
-            title=selectSongActivity.title;
-
-
-
-            // URL url = new URL("http://221.140.84.135/test.php");
-            URL url = new URL(server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            if (conn != null) {
-
-
-
-                conn.setConnectTimeout(10000);
-
-                conn.setUseCaches(false);
-
-
-
-                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
-                    BufferedReader br = new BufferedReader(
-
-                            new InputStreamReader(conn.getInputStream()));
-
-
-
-
-
-                    while (true) {
-
-                        String line = br.readLine();
-
-                        if (line == null)
-
-                            break;
-
-
-
-                    }
-
-                    br.close();
-
-
-
-                } else {
-
-
-
-                }
-
-                conn.disconnect();
-
-            }
-
-        } catch (Exception e) {
-
-
-        }
-
-
-
-
-    }
-
-        /*//티어 결정구간
-        if(sum>) {
+        //티어 결정구간
+        if(sum>20000) {
             // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
             Drawable drawable = getResources().getDrawable(R.drawable.challenger);
-
+            grade_str="challenger";
             // id : imageView01 <ImageView>를 가져온다.
             // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
-        }else if(){
+        }else if(sum>15000){
             // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
             Drawable drawable = getResources().getDrawable(R.drawable.diamond);
-
+            grade_str="diamond";
             // id : imageView01 <ImageView>를 가져온다.
             // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
-        }else if(){
+        }else if(sum>10000){
             // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
             Drawable drawable = getResources().getDrawable(R.drawable.platinum);
-
+            grade_str="platinum";
             // id : imageView01 <ImageView>를 가져온다.
             // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
 
-        }else if(){
+        }else if(sum>5000){
             // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
             Drawable drawable = getResources().getDrawable(R.drawable.gold);
-
+            grade_str="gold";
             // id : imageView01 <ImageView>를 가져온다.
             // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
-        }else if(){
+        }else if(sum>2500){
             // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
             Drawable drawable = getResources().getDrawable(R.drawable.silver);
-
+            grade_str="silver";
             // id : imageView01 <ImageView>를 가져온다.
             // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
@@ -204,13 +143,42 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
         }else {
             // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
             Drawable drawable = getResources().getDrawable(R.drawable.bronze);
-
+            grade_str="bronze";
             // id : imageView01 <ImageView>를 가져온다.
             // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
         }
-    */
+
+        try {
+
+            Log.v("artist",artist);
+            Log.v("artist",title);
+            Log.v("artist",grade_str);
+            Log.v("total:",Integer.toString(sum));
+            // URL url = new URL("http://221.140.84.135/test.php");
+            //
+            String nee=server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum;
+            URL url = new URL(server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            Log.v(nee,nee);
+
+            if (conn != null) {
+
+                conn.setConnectTimeout(10000);
+
+                conn.setUseCaches(true);
+
+            }
+        } catch (Exception e) {
+            Log.v("dddd","ddddd");
+        }
+
+    }
+
+
+
 
 
 

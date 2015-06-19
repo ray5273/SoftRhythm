@@ -9,7 +9,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 
 /**
@@ -101,16 +99,11 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
                     artist = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 개쩔었다.
                     title=   (String) ((TextView)view.findViewById(R.id.songName)).getText();
 
-                    Intent intent = new Intent(getApplicationContext(), resultActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
-                    intent.putExtra("title",title);
-                    intent.putExtra("artist",artist);
-                    intent.putExtra("cool","1000");
-                    intent.putExtra("good","1000");
-                    intent.putExtra("miss","1000");
-                    intent.putExtra("bad","1000");
-                    intent.putExtra("combo","1000");
+                    Intent intent = new Intent(getApplicationContext(), mainGameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
                     startActivity(intent);
                     finish();
+
+
                 }
             });
             alertDlg.setNegativeButton("취소",new DialogInterface.OnClickListener()
