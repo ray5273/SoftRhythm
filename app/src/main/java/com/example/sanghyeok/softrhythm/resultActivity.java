@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -58,10 +61,12 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
 
 
         artist_title=artist+"_"+title;
+        //노래제목과 가수를 받아온다.
 
         go_main=(Button)findViewById(R.id.go_main_result);
         restart_game_btn=(Button)findViewById(R.id.replay_game);
         go_main.setOnClickListener(this);
+        restart_game_btn.setOnClickListener(this);
 
         artist_text=(TextView)findViewById(R.id.artist);
         artist_text.setText(artist);
@@ -98,87 +103,107 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
         combo.setText("Combo :" + getData.getExtras().getString("combo"));
         sum=Integer.parseInt(getData.getExtras().getString("cool"))+Integer.parseInt(getData.getExtras().getString("good"));
         total.setText("Total : "+sum);
+
         //티어 결정구간
         if(sum>20000) {
-            // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
+            //20000이상시 챌린저 그림을 주고 변수를 챌린저로
             Drawable drawable = getResources().getDrawable(R.drawable.challenger);
             grade_str="challenger";
-            // id : imageView01 <ImageView>를 가져온다.
-            // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
         }else if(sum>15000){
-            // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
+            //15000이상시 다이아 그림을 주고 변수를 다이아로
             Drawable drawable = getResources().getDrawable(R.drawable.diamond);
             grade_str="diamond";
-            // id : imageView01 <ImageView>를 가져온다.
-            // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
         }else if(sum>10000){
-            // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
+            //10000이상시 플레티넘 그림을 주고 변수를 플레로
             Drawable drawable = getResources().getDrawable(R.drawable.platinum);
             grade_str="platinum";
-            // id : imageView01 <ImageView>를 가져온다.
-            // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
 
         }else if(sum>5000){
-            // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
+            //5000이상시 골드 그림을 주고 변수를 골드로
             Drawable drawable = getResources().getDrawable(R.drawable.gold);
             grade_str="gold";
-            // id : imageView01 <ImageView>를 가져온다.
-            // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
         }else if(sum>2500){
-            // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
+            //2500이상시 골드 그림을 주고 변수를 실버로
             Drawable drawable = getResources().getDrawable(R.drawable.silver);
             grade_str="silver";
-            // id : imageView01 <ImageView>를 가져온다.
-            // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
         }else {
-            // drawable 리소스에서 naverlogo 파일 호출 하여 Drawable에 등록
+            //0이상시 골드 그림을 주고 변수를 골드로
             Drawable drawable = getResources().getDrawable(R.drawable.bronze);
             grade_str="bronze";
-            // id : imageView01 <ImageView>를 가져온다.
-            // imageView01 에 리소스에서 가져온 naverlogo 등록
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
         }
+        new DownloadFilesTask().execute();
 
-        try {
-
-            Log.v("artist",artist);
-            Log.v("artist",title);
-            Log.v("artist",grade_str);
-            Log.v("total:",Integer.toString(sum));
-            // URL url = new URL("http://221.140.84.135/test.php");
-            //
-            String nee=server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum;
-            URL url = new URL(server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            Log.v(nee,nee);
-
-            if (conn != null) {
-
-                conn.setConnectTimeout(10000);
-
-                conn.setUseCaches(true);
-
-            }
-        } catch (Exception e) {
-            Log.v("dddd","ddddd");
-        }
+//        try {
+//
+//            Log.v("artist",artist);
+//            Log.v("artist",title);
+//            Log.v("artist",grade_str);
+//            Log.v("total:",Integer.toString(sum));
+//
+//            String nee=server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum;
+//            URL url1 = new URL(server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum);
+//            //server insert 주소를 받아서 그것을 실행시키면 value들이 자동으로 DB에 들어간다.
+//            HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
+//            conn.connect();
+//            Log.v(nee,nee);
+//
+//
+//        } catch (Exception e) {
+//            Log.v("connection:::::: ","ERROR::::::::");
+//            e.printStackTrace();
+//            Log.v("exception",e.toString());
+//
+//        }
 
     }
 
 
+    private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
+        // Do the long-running work in here
+        protected Long doInBackground(URL... urls) {
+            try {
 
+
+                URL url1 = new URL(server + "/insert.php" + "?artist=" + artist + "&title=" + title + "&grade=" + grade_str + "&total=" + sum);
+
+                //server insert 주소를 받아서 그것을 실행시키면 value들이 자동으로 DB에 들어간다.
+
+                HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
+                conn.connect();
+                Log.v("juso", "??");
+
+
+            } catch (Exception e) {
+                Log.v("connection:::::: ", "ERROR::::::::");
+                e.printStackTrace();
+                Log.v("exception", e.toString());
+
+            }
+
+                return 0L;
+        }
+        // This is called each time you call publishProgress()
+        protected void onProgressUpdate(Integer... progress) {
+
+        }
+
+        // This is called when doInBackground() is finished
+        protected void onPostExecute(Long result) {
+
+        }
+    }
 
 
 
@@ -210,8 +235,12 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.replay_game:
-                finish();
-                break;
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                String nee = server + "/insert.php" + "?artist=" + artist + "&title=" + title + "&grade=" + grade_str + "&total=" + sum;
+                Uri u = Uri.parse(nee);
+                i.setData(u);
+                startActivity(i);
+            break;
             case R.id.go_main_result:
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);

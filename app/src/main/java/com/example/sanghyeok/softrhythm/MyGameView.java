@@ -88,6 +88,7 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
     private int good_score;
     private int perfect_count;
     private int good_count;
+    private int miss_count;
 
     private int life;
 
@@ -128,28 +129,29 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
         sx2 = 2;
         sy2 = 2;
 
-        nw = Width / 3;
+        nw = Width / 3;     //Note width and height
         nh = Height / 20;
 
-        velocity = Height / 192;
+        velocity = Height / 192;       //Note velocity
 
-        bw = Width / 3;
+        bw = Width / 3;         //Button width and height
         bh = Height / 15;
 
-        ew = Width / 2;
+        ew = Width / 2;         //Effect width and height
         eh = Height / 5;
 
-        period = 2000/11;
+        period = 2000/11;       //period per Note
 
-        Effect_type = -1;
+        Effect_type = -1;       //type of effect
 
-        perfect_score = 120;
+        perfect_score = 120;    //score of note
         good_score = 100;
 
         paint.setTextSize(Width / 10);
         paint.setColor(Color.WHITE);
 
-        life = 20;
+        life = 20;      //life
+
 
         //initializing images
 
@@ -193,7 +195,6 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
     // ---------------------------------
     public MyGameView(Context context) {
         super(context);
-
 
 
         artist=selectSongActivity.artist;
@@ -245,7 +246,6 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
     // ---------------------------------
     public class MyThread extends Thread {
 
-
         public MyThread(SurfaceHolder Holder, Context context) {
             mHolder = Holder;
             mContext = context;
@@ -283,7 +283,7 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
                     }
                 }
 
-                try {
+                try{
                     canvas = mHolder.lockCanvas();
 
                     synchronized (mHolder) {
@@ -328,7 +328,7 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
         // ---------------------------------
         public void FileRead(){
 
-            Log.v("this!",filePath);
+           //read file and get notes from sdcard
 
             File file = new File(Environment.getExternalStorageDirectory()+"/SoftRhythm/"+"/Data/"+filePath+"/"+filePath+".txt");
             FileReader filereader = null;
@@ -338,6 +338,7 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+
             final BufferedReader reader = new BufferedReader(filereader);
 
 
@@ -359,12 +360,23 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
 
                         }
 
-                        else
+                        else        //file end, game over
+                        {
                             timer.cancel();
+                            Intent intent = new Intent(getContext(), resultActivity.class);
+                            intent.putExtra("cool",perfect_score * perfect_count+"");
+                            intent.putExtra("good",good_score * good_count + "");
+                            intent.putExtra("bad","0");
+                            intent.putExtra("miss", "0");
+                            intent.putExtra("combo", combo_max + "");
+                            intent.putExtra("artist",artist);
+                            intent.putExtra("title",title);
+                            getContext().startActivity(intent);
+                            System.exit(0);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             };
 
@@ -379,7 +391,7 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
 
             synchronized (mHolder) {
 
-                Note.add(new Note(Button_x[i], 0, velocity));
+                Note.add(new Note(Button_x[i], 0, velocity));   //add Note
 
             }
         }
@@ -393,7 +405,7 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
 
             }
             for(int i=0; i < Note.size(); i++) {
-                if (Note.get(i).Move() == true) {
+                if (Note.get(i).Move() == true) {   //out of display
 
                     Note.remove(i);
 
@@ -401,21 +413,23 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
 
                     combo = 0;
 
+                    miss_count++;   //miss count
+
                     life--;
 
-                    if (life == 0) {
-                        Intent intent = new Intent(getContext(), resultActivity.class);
 
+                    //game over
+                    if(life == 0) {
+                        Intent intent = new Intent(getContext(), resultActivity.class);
                         intent.putExtra("cool",perfect_score * perfect_count+"");
                         intent.putExtra("good",good_score * good_count + "");
-                        intent.putExtra("bad","0");
-                        intent.putExtra("miss", "0");
+                        intent.putExtra("bad",miss_count+"");
+                        intent.putExtra("miss", miss_count+"");
                         intent.putExtra("combo", combo_max + "");
                         intent.putExtra("artist",artist);
                         intent.putExtra("title",title);
                         getContext().startActivity(intent);
                         System.exit(0);
-
                     }
 
                     break;
@@ -433,30 +447,33 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
         //          ScrollImage
         // ---------------------------------
         public void ScrollImage() {
-            if (mMode == PAUSE) return;
+            if (mMode == PAUSE)
+                return;
+
             counter++;
 
             y2 += sy2;
-            if (x2 < 0)
+
+            if(x2 < 0)
                 x2 = cx;
-            else if (x2 > cx)
+            else if(x2 > cx)
                 x2 = 0;
-            else if (y2 < 0)
+            else if(y2 < 0)
                 y2 = cy;
-            else if (y2 > cy)
+            else if(y2 > cy)
                 y2 = 0;
 
             if (counter % 2 == 0) {
 
                 y1 += sy1;
 
-                if (x1 < 0)
+                if(x1 < 0)
                     x1 = cx;
-                else if (x1 > cx)
+                else if(x1 > cx)
                     x1 = 0;
-                else if (y1 < 0)
+                else if(y1 < 0)
                     y1 = cy;
-                else if (y1 > cy)
+                else if(y1 > cy)
                     y1 = 0;
             }
         }
@@ -475,13 +492,15 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
 
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
 
+            //get position
             int x = (int) event.getX();
             int y = (int) event.getY();
 
 
+            //checking clicked point
             int i;
-            for (i = 0; i < 3; i++) {
-                if (ButtonRect[i].contains(x, y) == true)
+            for(i = 0; i < 3; i++) {
+                if(ButtonRect[i].contains(x, y) == true)
                     break;
             }
 
@@ -503,7 +522,7 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
                             combo_max = combo;
 
                         //Effect_type and score
-                        if(Perfect[i].contains(cnx,cny) == true)    //perfect
+                        if(Perfect[i].contains(cnx,cny) == true)      //perfect
                         {
                             Effect_type = 0;
                             perfect_count++;

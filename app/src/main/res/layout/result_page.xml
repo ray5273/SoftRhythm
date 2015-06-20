@@ -135,7 +135,7 @@
                android:layout_weight="1"
                android:background="@layout/btn_selector"
                android:id="@+id/replay_game"
-               android:text="다시하기" />
+               android:text="랭킹저장" />
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

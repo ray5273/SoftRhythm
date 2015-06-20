@@ -60,11 +60,7 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
         // 리스트뷰에 어댑터 연결
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new  ListViewItemClickListener());        // ArrayAdapter를 통해서 ArrayList에 자료 저장
-        // 하나의 String값을 저장하던 것을 CData클래스의 객체를 저장하던것으로 변경
-        // CData 객체는 생성자에 리스트 표시 텍스트뷰1의 내용과 텍스트뷰2의 내용 그리고 사진이미지값을 어댑터에 연결
 
-        // CData클래스를 만들때의 순서대로 해당 인수값을 입력
-        // 한줄 한줄이 리스트뷰에 뿌려질 한줄 한줄이라고 생각하면 됩니다.'
 
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         path = path + "/SoftRhythm/Data";
@@ -75,7 +71,7 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
 
         if( !dir.exists() || folders.length==0 )
             adapter.add(new CData(getApplicationContext(),"곡이 없습니다",
-                    "곡을 다운받아 주십시오", R.drawable.ic_launcher));
+                    "곡을 다운받아 주십시오", R.drawable.ic_launcher));   //곡이 없으면 곡이 없다고 프린트함
 
         if(folders!=null)
           for(int j = 0 ;j<folders.length;j++) {                  //폴더의 정보들을 불러와서 listView 에 추가 정보가 없을시 곡이없습니다 출력
@@ -96,10 +92,10 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
             {
                 @Override
                 public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
-                    artist = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 개쩔었다.
+                    artist = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 가수이름과 제목을 받아옴
                     title=   (String) ((TextView)view.findViewById(R.id.songName)).getText();
 
-                    Intent intent = new Intent(getApplicationContext(), mainGameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
+                    Intent intent = new Intent(getApplicationContext(), mainGameActivity.class); // 게임 액티비티로 전환
                     startActivity(intent);
                     finish();
 
@@ -159,7 +155,7 @@ public class selectSongActivity extends FragmentActivity implements View.OnClick
                 tv.setText(data.getLabel());
                 tv.setTextColor(Color.WHITE);
                 tv.setTextSize(20);
-                tv.setTypeface(Typeface.createFromAsset(getAssets(),"bm_hanna.ttf"));
+                tv.setTypeface(Typeface.createFromAsset(getAssets(),"bm_hanna.ttf"));           //글자를 대입시켜줌
 
                 tv2.setText(data.getData());
                 tv2.setTextColor(Color.WHITE);

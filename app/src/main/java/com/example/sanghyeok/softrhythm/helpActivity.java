@@ -48,7 +48,6 @@ public class helpActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch(v.getId()){
-
             case R.id.back_btn:
                 Intent intent = new Intent(this,MainActivity.class);
                 startActivity(intent);

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="#000000"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,4 +22,22 @@
             android:src="@drawable/help"
             android:layout_weight="1" />
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="336dp"
+        android:layout_height="341dp"
+        android:id="@+id/helpimage"
+        android:src="@drawable/helpimage"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.61" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="빨간색과 파란색 초록색 버튼을 노란 노트와 겹칠때 눌러 노트를 없애세요!\n 행운을 빕니다!"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>
