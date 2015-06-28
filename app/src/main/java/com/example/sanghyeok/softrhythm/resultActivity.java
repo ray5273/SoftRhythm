@@ -77,6 +77,7 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
         title_text.setTypeface(Typeface.createFromAsset(getAssets(), "bm_hanna.ttf"));
 
         try{
+            //앨범아트 사진을 다운로드된 폴더로 부터 받아옴
             album_art = (ImageView)findViewById(R.id.album_art);
             String imgpath = Environment.getExternalStorageDirectory()+"/SoftRhythm/Data/";
             imgpath+=artist_title+"/"+artist_title+".png";
@@ -86,6 +87,7 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
         }catch(Exception e){Toast.makeText(getApplicationContext(), "load error", Toast.LENGTH_SHORT).show();}
 
 
+    //이미지들을 지정
         cool=(TextView)findViewById(R.id.cool);
         good=(TextView)findViewById(R.id.good);
         bad=(TextView)findViewById(R.id.bad);
@@ -95,7 +97,7 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
 
 
 
-
+    //게임의 결과 값들을 받아옴
         cool.setText("Perfect :" + getData.getExtras().getString("cool"));
         good.setText("Good :"+getData.getExtras().getString("good"));
         bad.setText("Bad :" + getData.getExtras().getString("bad"));
@@ -143,57 +145,11 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
             grade = (ImageView) findViewById(R.id.grade_img);
             grade.setImageDrawable(drawable);
         }
-        new DownloadFilesTask().execute();
-
-//        try {
-//
-//            Log.v("artist",artist);
-//            Log.v("artist",title);
-//            Log.v("artist",grade_str);
-//            Log.v("total:",Integer.toString(sum));
-//
-//            String nee=server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum;
-//            URL url1 = new URL(server+"/insert.php"+"?artist="+artist+"&title="+title+"&grade="+grade_str+"&total="+sum);
-//            //server insert 주소를 받아서 그것을 실행시키면 value들이 자동으로 DB에 들어간다.
-//            HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
-//            conn.connect();
-//            Log.v(nee,nee);
-//
-//
-//        } catch (Exception e) {
-//            Log.v("connection:::::: ","ERROR::::::::");
-//            e.printStackTrace();
-//            Log.v("exception",e.toString());
-//
-//        }
 
     }
 
 
-    private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
-        // Do the long-running work in here
-        protected Long doInBackground(URL... urls) {
-            try {
 
-
-                URL url1 = new URL(server + "/insert.php" + "?artist=" + artist + "&title=" + title + "&grade=" + grade_str + "&total=" + sum);
-
-                //server insert 주소를 받아서 그것을 실행시키면 value들이 자동으로 DB에 들어간다.
-
-                HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
-                conn.connect();
-                Log.v("juso", "??");
-
-
-            } catch (Exception e) {
-                Log.v("connection:::::: ", "ERROR::::::::");
-                e.printStackTrace();
-                Log.v("exception", e.toString());
-
-            }
-
-                return 0L;
-        }
         // This is called each time you call publishProgress()
         protected void onProgressUpdate(Integer... progress) {
 
@@ -203,7 +159,7 @@ public class resultActivity extends FragmentActivity implements View.OnClickList
         protected void onPostExecute(Long result) {
 
         }
-    }
+
 
 
 

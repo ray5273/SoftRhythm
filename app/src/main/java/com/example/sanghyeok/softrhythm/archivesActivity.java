@@ -200,9 +200,7 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
                 public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
                     artist = (String) ((TextView)view.findViewById(R.id.singerName)).getText();// 개쩔었다.
                     title=   (String) ((TextView)view.findViewById(R.id.songName)).getText();
-
-                    Log.v(artist, title);
-
+                    //특정 노래 선택시 그 곡에 대한 순위 intent 로 넘어감
                     Intent intent = new Intent(getApplicationContext(), archivesSongActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
                     startActivity(intent);
                     finish();
@@ -257,7 +255,7 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
                 // 화면 출력
                 TextView tv = (TextView) view.findViewById(R.id.singerName);
                 TextView tv2 = (TextView) view.findViewById(R.id.songName);
-
+                //가수명, 제목을 listview 에 출력
                 tv.setText(data.getLabel());
                 tv.setTextColor(Color.WHITE);
                 tv.setTextSize(20);
@@ -277,33 +275,6 @@ public class archivesActivity extends FragmentActivity implements View.OnClickLi
 
             return view;
 
-        }
-
-        private class ListViewItemClickListener implements AdapterView.OnItemClickListener
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
-                alertDlg.setPositiveButton( "확인", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick( DialogInterface dialog, int which ) {                  //선택적으로 정보를 받아야함
-   //                     Intent intent = new Intent(getApplicationContext(), gameActivity.class); // 잘모르겠네여기 왜 getApplicationContext쓰지?
-   //                     startActivity(intent);
-                        finish();
-                    }
-                });
-                alertDlg.setNegativeButton("취소",new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick( DialogInterface dialog, int which ) {
-
-                    }
-                });
-                alertDlg.setMessage("해당곡을 실행하시겠습니까?");
-                alertDlg.show();
-            }
         }
 
 

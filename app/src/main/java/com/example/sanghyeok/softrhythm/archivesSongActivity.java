@@ -131,7 +131,7 @@ public class archivesSongActivity extends FragmentActivity implements View.OnCli
             }
 
         } catch (Exception e) {
-
+            //오류시 오류를 listview에 프린트
             adapter.add(new CData(getApplicationContext(), e.toString(),
                     "", R.drawable.ic_launcher));
 
@@ -152,6 +152,8 @@ public class archivesSongActivity extends FragmentActivity implements View.OnCli
 
 
             adapter.clear();
+
+            //결과를 받아와서 일정점수 마다 배지를 부여
             for (int i = 0; i < ja.length(); i++) {
 
                 JSONObject jo = ja.getJSONObject(i);

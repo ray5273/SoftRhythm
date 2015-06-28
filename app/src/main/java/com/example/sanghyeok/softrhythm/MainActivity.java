@@ -68,6 +68,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         return super.onOptionsItemSelected(item);
     }
+
+    //Buttons in mainActivity
+    //if button is clicked, turn down the BGM
     public void onClick(View v){
         switch(v.getId()){
             case R.id.gameStart:

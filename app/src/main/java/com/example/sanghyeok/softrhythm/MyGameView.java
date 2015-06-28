@@ -328,8 +328,7 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
         // ---------------------------------
         public void FileRead(){
 
-           //read file and get notes from sdcard
-
+        //sd카드의 파일을 읽어서 노트를 생성한다.
             File file = new File(Environment.getExternalStorageDirectory()+"/SoftRhythm/"+"/Data/"+filePath+"/"+filePath+".txt");
             FileReader filereader = null;
 
@@ -360,7 +359,7 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
 
                         }
 
-                        else        //file end, game over
+                        else        // 파일이 끝나면 다음 intnent 로 정보를 넘겨주고 원래 intent를 끝낸다
                         {
                             timer.cancel();
                             Intent intent = new Intent(getContext(), resultActivity.class);
@@ -418,7 +417,8 @@ public class MyGameView extends SurfaceView implements SurfaceHolder.Callback {
                     life--;
 
 
-                    //game over
+                    //life 가 0이면 게임이 끝나고 결과창을 불러냄
+                    //결과페이지에 게임 데이터 전송
                     if(life == 0) {
                         Intent intent = new Intent(getContext(), resultActivity.class);
                         intent.putExtra("cool",perfect_score * perfect_count+"");

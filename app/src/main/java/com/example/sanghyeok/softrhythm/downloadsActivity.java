@@ -93,7 +93,6 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
         try {
 
             URL url = new URL(server+"/music_exist.php");
-//            URL url = new URL("http://221.140.84.135/music_exist.php");
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -104,6 +103,8 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
                 conn.setConnectTimeout(10000);
 
                 conn.setUseCaches(false);
+
+                //In server, get download data and print to listview
 
                 adapter.add(new CData(getApplicationContext(), String.valueOf(conn.getResponseCode()) + "\n"
                         + String.valueOf(HttpURLConnection.HTTP_OK),
@@ -171,8 +172,6 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
                 JSONObject jo = ja.getJSONObject(i);
 
-                //결과물
-
                 songname=jo.getString("songname");
                 singer=jo.getString("singer");
                 adapter.add(new CData(getApplicationContext(), singer,
@@ -213,7 +212,6 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
 
 
                     startDownload(artist,title);
-                    Log.v(artist, title);
                     Toast toast= Toast.makeText(getApplicationContext(),title+artist,Toast.LENGTH_LONG);
                     toast.show();
 
@@ -265,7 +263,7 @@ public class downloadsActivity  extends FragmentActivity implements View.OnClick
             final CData data = this.getItem(position);
 
             if (data != null) {
-                // 화면 출력
+                // in textview give  title, and singername
                 TextView tv = (TextView) view.findViewById(R.id.singerName);
                 TextView tv2 = (TextView) view.findViewById(R.id.songName);
 

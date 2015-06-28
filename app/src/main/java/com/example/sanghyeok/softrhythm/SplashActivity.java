@@ -10,6 +10,8 @@ import android.os.Message;
  */
 public class SplashActivity extends Activity {
     @Override
+
+    //시작할때 3초 동안 화면뜸
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);

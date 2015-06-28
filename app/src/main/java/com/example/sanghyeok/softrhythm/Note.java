@@ -3,6 +3,7 @@ package com.example.sanghyeok.softrhythm;
 import android.view.Display;
 import android.view.WindowManager;
 
+
 public class Note {
     public  int x, y;    //starting position
     public int velocity;        //velocity

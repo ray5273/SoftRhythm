@@ -46,6 +46,7 @@ public class helpActivity extends FragmentActivity implements View.OnClickListen
     }
 
     @Override
+    //go to back
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.back_btn:
